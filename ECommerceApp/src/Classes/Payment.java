@@ -24,10 +24,6 @@ public class Payment {
     return paymentId;
   }
 
-  public void setPaymentId(UUID paymentId) {
-    this.paymentId = paymentId;
-  }
-
   public double getAmount() {
     return amount;
   }
