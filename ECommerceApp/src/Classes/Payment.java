@@ -36,6 +36,27 @@ public class Payment {
     this.receiver = receiver;
   }
 
+  public String generateReceipt() {
+    return (
+      "Payment ID: " +
+      this.paymentId +
+      "\nAmount: " +
+      this.amount +
+      "\nIssue Date: " +
+      this.issueDate +
+      "\nDue Date: " +
+      this.dueDate +
+      "\nPayment Date: " +
+      this.paymentDate +
+      "\nPayment Status: " +
+      this.paymentStatus +
+      "\nSender: " +
+      this.sender +
+      "\nReceiver: " +
+      this.receiver
+    );
+  }
+
   public UUID getPaymentId() {
     return paymentId;
   }
