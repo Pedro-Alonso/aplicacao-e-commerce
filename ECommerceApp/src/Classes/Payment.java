@@ -4,84 +4,83 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Payment {
-    protected UUID paymentId;
-    protected double amount;
-    protected LocalDateTime issueDate;
-    protected LocalDateTime dueDate;
-    protected LocalDateTime paymentDate;
-    protected Status paymentStatus;
-    protected ECommerceUser sender;
-    protected ECommerceUser receiver;
 
-    public enum Status {
-        PENDING,
-        PAID,
-        CANCELLED
-    }
+  protected UUID paymentId;
+  protected double amount;
+  protected LocalDateTime issueDate;
+  protected LocalDateTime dueDate;
+  protected LocalDateTime paymentDate;
+  protected Status paymentStatus;
+  protected ECommerceUser sender;
+  protected ECommerceUser receiver;
 
-    public UUID getPaymentId() {
-        return paymentId;
-    }
+  public enum Status {
+    PENDING,
+    PAID,
+    CANCELLED,
+  }
 
-    public void setPaymentId(UUID paymentId) {
-        this.paymentId = paymentId;
-    }
+  public UUID getPaymentId() {
+    return paymentId;
+  }
 
-    public double getAmount() {
-        return amount;
-    }
+  public void setPaymentId(UUID paymentId) {
+    this.paymentId = paymentId;
+  }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
+  public double getAmount() {
+    return amount;
+  }
 
-    public LocalDateTime getIssueDate() {
-        return issueDate;
-    }
+  public void setAmount(double amount) {
+    this.amount = amount;
+  }
 
-    public void setIssueDate(LocalDateTime issueDate) {
-        this.issueDate = issueDate;
-    }
+  public LocalDateTime getIssueDate() {
+    return issueDate;
+  }
 
-    public LocalDateTime getDueDate() {
-        return dueDate;
-    }
+  public void setIssueDate(LocalDateTime issueDate) {
+    this.issueDate = issueDate;
+  }
 
-    public void setDueDate(LocalDateTime dueDate) {
-        this.dueDate = dueDate;
-    }
+  public LocalDateTime getDueDate() {
+    return dueDate;
+  }
 
-    public LocalDateTime getPaymentDate() {
-        return paymentDate;
-    }
+  public void setDueDate(LocalDateTime dueDate) {
+    this.dueDate = dueDate;
+  }
 
-    public void setPaymentDate(LocalDateTime paymentDate) {
-        this.paymentDate = paymentDate;
-    }
+  public LocalDateTime getPaymentDate() {
+    return paymentDate;
+  }
 
-    public Status getPaymentStatus() {
-        return paymentStatus;
-    }
+  public void setPaymentDate(LocalDateTime paymentDate) {
+    this.paymentDate = paymentDate;
+  }
 
-    public void setPaymentStatus(Status paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
+  public Status getPaymentStatus() {
+    return paymentStatus;
+  }
 
-    public ECommerceUser getSender() {
-        return sender;
-    }
+  public void setPaymentStatus(Status paymentStatus) {
+    this.paymentStatus = paymentStatus;
+  }
 
-    public void setSender(ECommerceUser sender) {
-        this.sender = sender;
-    }
+  public ECommerceUser getSender() {
+    return sender;
+  }
 
-    public ECommerceUser getReceiver() {
-        return receiver;
-    }
+  public void setSender(ECommerceUser sender) {
+    this.sender = sender;
+  }
 
-    public void setReceiver(ECommerceUser receiver) {
-        this.receiver = receiver;
-    }
+  public ECommerceUser getReceiver() {
+    return receiver;
+  }
 
-    
+  public void setReceiver(ECommerceUser receiver) {
+    this.receiver = receiver;
+  }
 }
