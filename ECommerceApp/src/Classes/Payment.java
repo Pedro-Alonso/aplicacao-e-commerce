@@ -57,6 +57,16 @@ public class Payment {
     );
   }
 
+  public void pay() {
+    this.paymentDate = LocalDateTime.now();
+    this.paymentStatus = Status.PAID;
+  }
+
+  public void cancel() {
+    this.paymentDate = null;
+    this.paymentStatus = Status.CANCELLED;
+  }
+
   public UUID getPaymentId() {
     return paymentId;
   }
