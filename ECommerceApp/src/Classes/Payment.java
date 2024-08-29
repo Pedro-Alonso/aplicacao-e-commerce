@@ -20,6 +20,22 @@ public class Payment {
     CANCELLED,
   }
 
+  public Payment(
+    double amount,
+    LocalDateTime dueDate,
+    ECommerceUser sender,
+    ECommerceUser receiver
+  ) {
+    this.paymentId = UUID.randomUUID();
+    this.amount = amount;
+    this.issueDate = LocalDateTime.now();
+    this.dueDate = dueDate;
+    this.paymentDate = null;
+    this.paymentStatus = Status.PENDING;
+    this.sender = sender;
+    this.receiver = receiver;
+  }
+
   public UUID getPaymentId() {
     return paymentId;
   }
