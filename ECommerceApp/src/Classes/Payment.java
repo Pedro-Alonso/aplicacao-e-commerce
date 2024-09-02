@@ -38,22 +38,26 @@ public class Payment {
 
   public String generateReceipt() {
     return (
-      "Payment ID: " +
-      this.paymentId +
-      "\nAmount: " +
-      this.amount +
-      "\nIssue Date: " +
-      this.issueDate +
-      "\nDue Date: " +
-      this.dueDate +
-      "\nPayment Date: " +
-      this.paymentDate +
-      "\nPayment Status: " +
-      this.paymentStatus +
-      "\nSender: " +
-      this.sender +
-      "\nReceiver: " +
-      this.receiver
+      String.format(
+        """
+      Payment ID: %s
+      Amount: %s
+      Issue date: %s
+      Due date: %s
+      Payment date: %s
+      Payment status: %s
+      Sender: %s
+      Receiver: %s
+      """,
+        paymentId,
+        amount,
+        issueDate,
+        dueDate,
+        paymentDate,
+        paymentStatus,
+        sender,
+        receiver
+      )
     );
   }
 
