@@ -5,14 +5,14 @@ import java.util.UUID;
 
 public class Payment {
 
-  protected UUID paymentId;
-  protected double amount;
-  protected LocalDateTime issueDate;
-  protected LocalDateTime dueDate;
-  protected LocalDateTime paymentDate;
-  protected Status paymentStatus;
-  protected ECommerceUser sender;
-  protected ECommerceUser receiver;
+  private UUID paymentId;
+  private double amount;
+  private LocalDateTime issueDate;
+  private LocalDateTime dueDate;
+  private LocalDateTime paymentDate;
+  private Status paymentStatus;
+  private ECommerceUser sender;
+  private ECommerceUser receiver;
 
   public enum Status {
     PENDING,
