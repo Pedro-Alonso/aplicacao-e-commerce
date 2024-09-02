@@ -36,6 +36,10 @@ public class Payment {
     this.receiver = receiver;
   }
 
+  /**
+   * Method that returns the attributes of the Payment object
+   * @return void
+   */
   public String generateReceipt() {
     return (
       String.format(
@@ -61,11 +65,19 @@ public class Payment {
     );
   }
 
+  /**
+   * Method to set the Payment as PAID
+   * @return void
+   */
   public void pay() {
     this.paymentDate = LocalDateTime.now();
     this.paymentStatus = Status.PAID;
   }
 
+  /**
+   * Method to cancel the Payment
+   * @return void
+   */
   public void cancel() {
     this.paymentDate = null;
     this.paymentStatus = Status.CANCELLED;
