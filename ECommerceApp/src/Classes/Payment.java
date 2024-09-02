@@ -10,11 +10,11 @@ public class Payment {
   private LocalDateTime issueDate;
   private LocalDateTime dueDate;
   private LocalDateTime paymentDate;
-  private Status paymentStatus;
+  private PaymentStatus paymentStatus;
   private ECommerceUser sender;
   private ECommerceUser receiver;
 
-  public enum Status {
+  public enum PaymentStatus {
     PENDING,
     PAID,
     CANCELLED,
@@ -31,7 +31,7 @@ public class Payment {
     this.issueDate = LocalDateTime.now();
     this.dueDate = dueDate;
     this.paymentDate = null;
-    this.paymentStatus = Status.PENDING;
+    this.paymentStatus = PaymentStatus.PENDING;
     this.sender = sender;
     this.receiver = receiver;
   }
@@ -71,7 +71,7 @@ public class Payment {
    */
   public void pay() {
     this.paymentDate = LocalDateTime.now();
-    this.paymentStatus = Status.PAID;
+    this.paymentStatus = PaymentStatus.PAID;
   }
 
   /**
@@ -80,7 +80,7 @@ public class Payment {
    */
   public void cancel() {
     this.paymentDate = null;
-    this.paymentStatus = Status.CANCELLED;
+    this.paymentStatus = PaymentStatus.CANCELLED;
   }
 
   public UUID getPaymentId() {
@@ -119,11 +119,11 @@ public class Payment {
     this.paymentDate = paymentDate;
   }
 
-  public Status getPaymentStatus() {
+  public PaymentStatus getPaymentStatus() {
     return paymentStatus;
   }
 
-  public void setPaymentStatus(Status paymentStatus) {
+  public void setPaymentStatus(PaymentStatus paymentStatus) {
     this.paymentStatus = paymentStatus;
   }
 
