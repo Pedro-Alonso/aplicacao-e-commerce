@@ -72,21 +72,5 @@ public class PaymentCard extends Payment {
     public void setNomeCompleto(String nomeCompleto) {
         this.nomeCompleto = nomeCompleto;
     }
-
-    public LocalDate getValidade() {
-        return validade;
-    }
-
-    public void setValidade(LocalDate validade) {
-        this.validade = validade;
-    }
-
-    public int getCodigoSeguranca() {
-        return codigoSeguranca;
-    }
-
-    public void setCodigoSeguranca(int codigoSeguranca) {
-        this.codigoSeguranca = codigoSeguranca;
-    }
    
 }
