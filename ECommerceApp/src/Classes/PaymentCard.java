@@ -2,6 +2,7 @@ package ECommerceApp.src.Classes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Random; 
 
 public class PaymentCard extends Payment { 
     private int numeroCartao;
@@ -28,10 +29,30 @@ public class PaymentCard extends Payment {
         super(amount, dueDate, sender, receiver);
         this.numeroCartao = numeroCartao;
         this.nomeCompleto = nomeCompleto;
-        this.validade = validade;
-        this.codigoSeguranca = codigoSeguranca;
+        this.validade = gerarValidade();
+        this.codigoSeguranca = gerarCodigoSeguranca();
     }
     
+    // gerar validade aleatória 
+    public LocalDate gerarValidade(){
+        Random random = new Random();
+        LocalDate validadeAleatoria = LocalDate.now();
+        int dias = 1 + random.nextInt(28); // escolhe um dia entre 1 e 27  
+        int mes = 1 + random.nextInt(11); // escolhe um mês entre 1 e 12
+        int ano = random.nextInt(10); // escolhe um ano entre 0 a 10 anos pra frente
+        
+        validadeAleatoria = validadeAleatoria.plusDays(dias)
+                                             .plusMonths(mes)
+                                             .plusYears(ano);
+
+        return validadeAleatoria;
+    }
+
+    // gerar codigo de segurança aleatório
+    public int gerarCodigoSeguranca(){
+        Random codigoAleatorio = new Random();
+        return 100 + codigoAleatorio.nextInt(900); // vai gerar um número entre 100 e 999;
+    }
     
     
     // Getters and Setters
