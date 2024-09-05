@@ -30,6 +30,13 @@ public class CreditCard extends PaymentCard{
         return limiteCartao;
     }
 
+    // Juros proveniente da taxa do banco
+    public double jurosBanco(double valorProduto){
+        return (valorProduto*0.02); // juros do banco sbore a transação de crédito de 3%
+    }
+
+    
+
     // Getters and setters
     public double getLimiteCartao() {
         return limiteCartao;
