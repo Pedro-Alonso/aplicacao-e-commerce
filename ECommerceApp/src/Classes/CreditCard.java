@@ -10,7 +10,17 @@ public class CreditCard extends PaymentCard{
         this.limiteCartao = limiteCartao;
     }
 
-    
+    // Verificar limite do cartão
+    public boolean verificarLimite(double limiteCartao){
+        if(limiteCartao <= 0){
+            return false; // cartão não possui limite disponível
+        }
+        
+        return true; // cartão possui limite
+    }
+
+
+    // Getters and setters
     public double getLimiteCartao() {
         return limiteCartao;
     }
