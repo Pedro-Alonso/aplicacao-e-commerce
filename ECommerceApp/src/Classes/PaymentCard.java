@@ -1,6 +1,7 @@
 package ECommerceApp.src.Classes;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class PaymentCard extends Payment { 
     private int numeroCartao;
@@ -23,7 +24,8 @@ public class PaymentCard extends Payment {
         BLACK
     }
     
-    public PaymentCard(int numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca){
+    public PaymentCard(double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, int numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca){
+        super(amount, dueDate, sender, receiver);
         this.numeroCartao = numeroCartao;
         this.nomeCompleto = nomeCompleto;
         this.validade = validade;

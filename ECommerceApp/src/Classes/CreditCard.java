@@ -1,12 +1,13 @@
 package ECommerceApp.src.Classes;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class CreditCard extends PaymentCard{
     private double limiteCartao;
     
-    public CreditCard(int numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca, double limiteCartao){
-        super(numeroCartao, nomeCompleto, validade, codigoSeguranca);
+    public CreditCard(double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, int numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca, double limiteCartao){
+        super(amount, dueDate, sender, receiver, numeroCartao, nomeCompleto, validade, codigoSeguranca);
         this.limiteCartao = limiteCartao;
     }
 
@@ -35,7 +36,7 @@ public class CreditCard extends PaymentCard{
         return (valorProduto*0.02); // juros do banco sbore a transação de crédito de 3%
     }
 
-    
+
 
     // Getters and setters
     public double getLimiteCartao() {
