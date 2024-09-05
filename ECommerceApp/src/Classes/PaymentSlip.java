@@ -69,8 +69,8 @@ public class PaymentSlip extends Payment {
      */
     private long getDaysOfFee() {
         LocalDateTime dueDate = getDueDate();
-
-        return this.paymentStatus == Status.PAID ? dueDate.until(this.getPaymentDate(), ChronoUnit.DAYS) : dueDate.until(LocalDateTime.now(), ChronoUnit.DAYS);
+        
+        return this.getPaymentStatus() == PaymentStatus.PAID ? dueDate.until(this.getPaymentDate(), ChronoUnit.DAYS) : dueDate.until(LocalDateTime.now(), ChronoUnit.DAYS);
     }
 
     /**
@@ -79,7 +79,7 @@ public class PaymentSlip extends Payment {
      * @return the fine value
      */
     public double getFineValue() {
-        if (this.paymentStatus == Status.CANCELLED) {
+        if (this.getPaymentStatus() == PaymentStatus.CANCELLED) {
             return 0;
         }
 
@@ -97,10 +97,10 @@ public class PaymentSlip extends Payment {
      * @return the delay fee value
      */
     public double getDelayFeeValue() {
-        Status paymentStatus = getPaymentStatus();
+        PaymentStatus paymentStatus = getPaymentStatus();
 
         // if the payment has already been canceled, it doesn't have any fee 
-        if (paymentStatus == Status.CANCELLED) {
+        if (paymentStatus == PaymentStatus.CANCELLED) {
             return 0;
         }
 
