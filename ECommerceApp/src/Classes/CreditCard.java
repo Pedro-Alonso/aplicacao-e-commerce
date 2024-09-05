@@ -19,6 +19,16 @@ public class CreditCard extends PaymentCard{
         return true; // cartão possui limite
     }
 
+    // Alterar o limitie do cartão
+    public double alterarLimite(double limiteCartao, double valor){
+        if(limiteCartao < 0){ // se o limite do cartão for menor que zero, não é possível deixar ele mais negativo
+            return limiteCartao;
+        }else{
+            limiteCartao -= valor;
+        }
+        
+        return limiteCartao;
+    }
 
     // Getters and setters
     public double getLimiteCartao() {
