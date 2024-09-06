@@ -1,25 +1,23 @@
-package eCommerce;
+package ECommerceApp.src.Classes;
 import java.util.UUID;
 import java.time.LocalDateTime;
 
-// NOTA: Ja está com o básico para funcionar, mas vou adicionar as funcionalidades de reports e upvotes/downvotes nas avaliações
-
-public class AvaliacaoPontual {
+public class ProductRating {
 	
 	// ATTRIBUTES
 	private String comment;
-	private eCommerceUser rater;
-	private UUID ratingId;
-	private LocalDateTime ratingDate;
+	private ECommerceUser rater;
+	private UUID id;
+	private LocalDateTime creationDate;
 	private int stars;
 	
 	// CONSTRUCTOR
-	public AvaliacaoPontual(String comment, eCommerceUser rater, int stars) 
+	public ProductRating(String comment, ECommerceUser rater, int stars) 
 	{
-		this.ratingId = UUID.randomUUID();
+		this.id = UUID.randomUUID();
 		this.stars = stars;
 		this.comment = comment;
-		this.ratingDate = LocalDateTime.now();
+		this.creationDate = LocalDateTime.now();
 		this.rater = rater;
 	}
 	
@@ -28,10 +26,10 @@ public class AvaliacaoPontual {
 	
 	
 	// Returns the rating's information
-	String getInfo() {
-		return  ("Rating ID: " + this.ratingId.toString() +
+	public String getInfo() {
+		return  ("Rating ID: " + this.id.toString() +
 				"\nRater ID: " + this.rater.getId() + 
-				"\nDate: " + this.ratingDate.toString() +
+				"\nDate: " + this.creationDate.toString() +
 				"\nStars: " + Integer.toString(this.stars) + 
 				"\nComment: " + this.comment);
 	}
@@ -39,24 +37,14 @@ public class AvaliacaoPontual {
 	
 	// =========================================================================================================================================================
 	
-	// This will be used later on, when not all getters and setters are available due to encapsulation requirements
-	
 	// GETTERS AND SETTERS --------------------------------------------------------------------------------------------------------------------------------------
 
 	    public UUID getId() {
-	        return ratingId;
+	        return id;
 	    }
 
-	    public void setId(UUID ratingId) {
-	        this.ratingId = ratingId;
-	    }
-
-	    public eCommerceUser getRater() {
+	    public ECommerceUser getRater() {
 	        return rater;
-	    }
-
-	    public void setRater(eCommerceUser rater) {
-	        this.rater = rater;
 	    }
 
 	    public int getStars() {
@@ -67,12 +55,8 @@ public class AvaliacaoPontual {
 	        this.stars = stars;
 	    }
 
-	    public LocalDateTime getRatingDate() {
-	        return ratingDate;
-	    }
-
-	    public void setRatingDate(LocalDateTime ratingDate) {
-	        this.ratingDate = ratingDate;
+	    public LocalDateTime getCreationDate() {
+	        return creationDate;
 	    }
 
 	    public String getComment() {

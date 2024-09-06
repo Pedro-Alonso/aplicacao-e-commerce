@@ -1,51 +1,49 @@
-package eCommerce;
+package ECommerceApp.src.Classes;
 import java.util.UUID;
 import java.util.ArrayList;
 import java.lang.StringBuilder;
 
-public class AvaliacaoProduto {
+public class ProductReview {
 	
 	// ATTRIBUTES
-	private Produto product;
-	private UUID productRatingId;
+	private Product product;
+	private UUID id;
 	private int ratingCount;
 	private float averageRating;
-	private ArrayList<AvaliacaoPontual> ratings;
+	private ArrayList<ProductRating> ratings;
 	
 	// CONSTRUCTOR
-	public AvaliacaoProduto() {
-		this.productRatingId = UUID.randomUUID();
+	public ProductReview() {
+		this.id = UUID.randomUUID();
 		this.ratingCount = 0;
 		this.averageRating = 0;
 	}
-	
-	
-	
+
 	// METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
 	
 	// METHODS RELATED TO THE MANAGEMENT OF INDIVIDUAL RATINGS ------------------------------------------------------------------------------------------------
 	
 	// Adding a specific rating to the product rating list
-	public void addRating(eCommerceUser rater, int stars, String comment) {
+	public void addRating(ECommerceUser rater, int stars, String comment) {
 		
 		// Adding the new rating to the list of ratings
-		AvaliacaoPontual newRating = new AvaliacaoPontual(comment, rater, stars);
+		ProductRating newRating = new ProductRating(comment, rater, stars);
 		ratings.add(newRating);
 		
 		// Increasing the rating count
 		this.ratingCount++;
 		
 		// Recalculating the average of ratings and updating it
-		this.setAverageRating(this.calculateAverageRating());
+		this.averageRating = this.calculateAverageRating();
 	}
 	
 	// Search and return a specific rating, or null
-	public AvaliacaoPontual getRating(UUID ratingId){
+	public ProductRating getRating(UUID id){
 		
 		// Returning the searched rating
-		for(AvaliacaoPontual rating : this.ratings) {
-			if(rating.getId() == ratingId) return rating;
+		for(ProductRating rating : this.ratings) {
+			if(rating.getId() == id) return rating;
 		}
 		
 		// if it is not found, return null
@@ -53,13 +51,13 @@ public class AvaliacaoProduto {
 	}
 	
 	// Remove a rating 
-	public String removeRating(UUID ratingId) {
+	public String removeRating(UUID id) {
 		
 		// Searching for the rating
-		AvaliacaoPontual rating = this.getRating(ratingId);
+		ProductRating rating = this.getRating(id);
 		
 		// If it exists, remove it and decrease the number of total ratings
-		if(ratingId != null) {
+		if(id != null) {
 			this.ratings.remove(rating);
 			this.ratingCount--;
 			return "success";
@@ -75,15 +73,15 @@ public class AvaliacaoProduto {
 	// METHODS THAT CONCATENATE AND RETURN SPECIFIC INFORMATION -----------------------------------------------------------------------------------------------	
 	
 	// Returns all information regarding both the product rating and the individual ratings
-	String getAllInfo() {
+	public String getAllInfo() {
 		return this.getGeneralInfo() + "\n\n" + this.getRatingsInfo();
 	}
 	
 	// Concatenates and returns the general information regarding the product ratings
-	String getGeneralInfo() {
+	public String getGeneralInfo() {
 		
 		return (
-				"Product ID: " + this.productRatingId.toString() +
+				"Product ID: " + this.id.toString() +
 				"\nProduct ID: " + this.product.getId() + 
 				"\nProduct name: " + this.product.getName() + 
 				"\n Average rating: " + Float.toString(this.averageRating) +
@@ -92,12 +90,12 @@ public class AvaliacaoProduto {
 	}
 	
 	// Concatenates and returns the information of all ratings
-	String getRatingsInfo(){
+	public String getRatingsInfo(){
 		
 		if (this.ratings == null) {
 			
 			StringBuilder information = new StringBuilder("ALL RATINGS: \n\n");
-			for (AvaliacaoPontual rating : this.ratings) {
+			for (ProductRating rating : this.ratings) {
 			information.append(rating.getInfo()).append("\n\n");}
 			return information.toString();
 		}
@@ -112,7 +110,7 @@ public class AvaliacaoProduto {
 		private float calculateAverageRating() {
 
 			int starCount = 0;
-			for(AvaliacaoPontual rating : ratings) {
+			for(ProductRating rating : ratings) {
 				starCount += rating.getStars();
 			}
 			
@@ -122,46 +120,24 @@ public class AvaliacaoProduto {
 		
 	// ========================================================================================================================================================	
 		
-		
-		
 	// GETTERS AND SETTERS ------------------------------------------------------------------------------------------------------------------------------------------
-	public Produto getProduct() {
+	public Product getProduct() {
         return product;
     }
 
-    public void setProduct(Produto product) {
-        this.product = product;
-    }
-
-    public UUID getProductRatingId() {
-        return productRatingId;
-    }
-
-    public void setProductRatingId(UUID productRatingId) {
-        this.productRatingId = productRatingId;
+    public UUID getId() {
+        return this.id;
     }
 
     public int getRatingCount() {
-        return ratingCount;
-    }
-
-    public void setRatingCount(int ratingCount) {
-        this.ratingCount = ratingCount;
+        return this.ratingCount;
     }
 
     public float getAverageRating() {
-        return averageRating;
+        return this.averageRating;
     }
 
-    public void setAverageRating(float averageRating) {
-        this.averageRating = averageRating;
-    }
-
-    public ArrayList<AvaliacaoPontual> getRatings() {
+    public ArrayList<ProductRating> getRatings() {
         return ratings;
-    }
-
-    public void setRatings(ArrayList<AvaliacaoPontual> ratings) {
-        this.ratings = ratings;
     }
 }
