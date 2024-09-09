@@ -8,57 +8,59 @@ public class DebitCard extends PaymentCard{
     private double limiteEspecial;
     private double saldo;
     
-    public DebitCard(double limiteEspecial, double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, int numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca, Bandeira bandeira, NivelCartao nivelCartao) {
+    public DebitCard(double saldo, double limiteEspecial, double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, int numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca, Bandeira bandeira, NivelCartao nivelCartao) {
         super(amount, dueDate, sender, receiver, numeroCartao, nomeCompleto, validade, codigoSeguranca, bandeira, nivelCartao);
+        this.saldo = saldo;
         this.limiteEspecial = limiteEspecial;
     }
     
-    // verifica se a conta possui saldo
-    public boolean verificaSaldo(){
-        if(saldo < 0){
+    
+    // verifica se a conta pode comprar
+    public boolean verificaCompra(){
+        double saldoConta = getSaldo();
+        double limiteEspecialConta = getLimiteEspecial();
+        
+        if(saldoConta + limiteEspecialConta < 0){ // a conta não possui saldo e limite especial suficiente
             return false;
         }
         
         return true;
     }
-
-
-    // alterar saldo da conta
+    
+    // altera saldo da conta
     public double alteraSaldo(){
-        switch(super.getNivelCartao()){
-            case NORMAL:
-                if(limiteEspecial < 0){
-                    return 0;
-                }else{
-                    limiteEspecial -= super.getAmount();
-                }
-                return limiteEspecial;
-            case GOLD:
-                if(limiteEspecial < -1000){
-                    return 0;
-                }else{
-                    limiteEspecial -= super.getAmount();
-                }
-                return limiteEspecial;
-            case PLATINUM:
-                if(limiteEspecial < -2500){
-                    return 0;
-                }else{
-                    limiteEspecial -= super.getAmount();
-                }
-                return limiteEspecial;
-            case BLACK:
-                if(limiteEspecial < -5000){
-                    return 0;
-                }else{
-                    limiteEspecial -= super.getAmount();
-                }
-                return limiteEspecial;
-            default:
-                return 0;
+        double valorProduto = super.getAmount();
+        
+        if(verificaCompra() == false){ // não possui saldo suficiente para comprar
+            return 0;
         }
+        
+        if(saldo > valorProduto){ // possível realizar a compra
+            saldo -= valorProduto;
+            return saldo;
+        }
+        
+        if(valorProduto > saldo + limiteEspecial){ // valor muito alto
+            return 0; 
+        }else{
+            saldo -= valorProduto;
+            alteraLimiteEspecial(valorProduto);
+        }
+        
+        return saldo;
     }
-
+    
+    // alterar limite especial da conta
+    public double alteraLimiteEspecial(double valor){
+        if(valor < 0){
+            return limiteEspecial;
+        }
+        
+        limiteEspecial -= valor;
+        return limiteEspecial;
+    }
+    
+    
     // getters and setters
     public double getLimiteEspecial() {
         return limiteEspecial;
@@ -67,5 +69,14 @@ public class DebitCard extends PaymentCard{
     public void setLimiteEspecial(double limiteEspecial) {
         this.limiteEspecial = limiteEspecial;
     }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+    
     
 }
