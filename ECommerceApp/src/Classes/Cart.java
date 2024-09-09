@@ -8,11 +8,13 @@ public class Cart {
     private UUID id;
     private ArrayList<Product> products;
     private double totalPrice;
+    private UUID userId;
 
 
-    public Cart() {
+    public Cart(UUID userId) {
         this.id = UUID.randomUUID();
         this.products = new ArrayList<>();
+        this.userId = userId;
         this.totalPrice = 0;
     }
 
@@ -37,15 +39,22 @@ public class Cart {
 
     public UUID getId() {
         return id;
-    }   
+    }
+    
+    public UUID getUserId() {
+        return userId;
+    }
 
-    public void displayCart() {
-        System.out.println("Cart ID: " + id);
-        System.out.println("Total Price: " + totalPrice);
-        System.out.println("Products in Cart:");
+
+    public String displayCart() {
+        String productDisplay = "";
         for (Product product : products) {
-            product.displayProduct();
+            productDisplay += product.getName() + ", ";
         }
+        return String.format("""
+                Preco Total: %s
+                Produtos: %s
+                """, totalPrice, productDisplay);
     }
 
     public ArrayList<Product> getProducts() {
