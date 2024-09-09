@@ -12,7 +12,42 @@ public class DebitCard extends PaymentCard{
         this.limiteEspecial = limiteEspecial;
     }
     
-    
+    // alterar saldo da conta
+    public double alteraSaldo(){
+        switch(super.getNivelCartao()){
+            case NORMAL:
+                if(limiteEspecial < 0){
+                    return 0;
+                }else{
+                    limiteEspecial -= super.getAmount();
+                }
+                return limiteEspecial;
+            case GOLD:
+                if(limiteEspecial < -1000){
+                    return 0;
+                }else{
+                    limiteEspecial -= super.getAmount();
+                }
+                return limiteEspecial;
+            case PLATINUM:
+                if(limiteEspecial < -2500){
+                    return 0;
+                }else{
+                    limiteEspecial -= super.getAmount();
+                }
+                return limiteEspecial;
+            case BLACK:
+                if(limiteEspecial < -5000){
+                    return 0;
+                }else{
+                    limiteEspecial -= super.getAmount();
+                }
+                return limiteEspecial;
+            default:
+                return 0;
+        }
+    }
+
     // getters and setters
     public double getLimiteEspecial() {
         return limiteEspecial;
