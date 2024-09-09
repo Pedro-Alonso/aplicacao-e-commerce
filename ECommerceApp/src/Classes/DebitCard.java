@@ -6,12 +6,23 @@ import java.time.LocalDateTime;
 
 public class DebitCard extends PaymentCard{
     private double limiteEspecial;
+    private double saldo;
     
     public DebitCard(double limiteEspecial, double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, int numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca, Bandeira bandeira, NivelCartao nivelCartao) {
         super(amount, dueDate, sender, receiver, numeroCartao, nomeCompleto, validade, codigoSeguranca, bandeira, nivelCartao);
         this.limiteEspecial = limiteEspecial;
     }
     
+    // verifica se a conta possui saldo
+    public boolean verificaSaldo(){
+        if(saldo < 0){
+            return false;
+        }
+        
+        return true;
+    }
+
+
     // alterar saldo da conta
     public double alteraSaldo(){
         switch(super.getNivelCartao()){
