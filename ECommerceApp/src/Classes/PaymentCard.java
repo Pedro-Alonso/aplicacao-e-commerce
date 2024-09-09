@@ -2,16 +2,17 @@ package ECommerceApp.src.Classes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Random; 
+import java.util.Random;
 
-public class PaymentCard extends Payment { 
+public class PaymentCard extends Payment{
     private int numeroCartao;
-    // private String bandeira;
     private String nomeCompleto;
     private LocalDate validade;
     private int codigoSeguranca;
+    private Bandeira bandeira;
+    private NivelCartao nivelCartao;
     
-    private enum bandeira{
+    protected enum Bandeira{
         MASTERCARD,
         VISA, 
         ELO, 
@@ -19,19 +20,29 @@ public class PaymentCard extends Payment {
         HIPERCARD
     } 
     
-    private enum nivelCartao{
+    protected enum NivelCartao{
+        NORMAL,
         GOLD,
         PLATINUM,
         BLACK
     }
     
-    public PaymentCard(double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, int numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca){
+    public PaymentCard(double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, int numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca, Bandeira bandeira, NivelCartao nivelCartao){
         super(amount, dueDate, sender, receiver);
         this.numeroCartao = numeroCartao;
         this.nomeCompleto = nomeCompleto;
         this.validade = gerarValidade();
         this.codigoSeguranca = gerarCodigoSeguranca();
+        this.bandeira = bandeira;
+        this.nivelCartao = nivelCartao;
     }
+    
+    // verificar se o cartão existe
+    public void existenciaCartao(){
+        
+    }
+    
+    // verificar qual o modelo do cartão (crédito, débito ou digital)
     
     // gerar validade aleatória 
     public LocalDate gerarValidade(){
@@ -72,5 +83,39 @@ public class PaymentCard extends Payment {
     public void setNomeCompleto(String nomeCompleto) {
         this.nomeCompleto = nomeCompleto;
     }
-   
+
+    public LocalDate getValidade() {
+        return validade;
+    }
+
+    public void setValidade(LocalDate validade) {
+        this.validade = validade;
+    }
+
+    public int getCodigoSeguranca() {
+        return codigoSeguranca;
+    }
+
+    public void setCodigoSeguranca(int codigoSeguranca) {
+        this.codigoSeguranca = codigoSeguranca;
+    }
+
+    public Bandeira getBandeira() {
+        return bandeira;
+    }
+
+    public void setBandeira(Bandeira bandeira) {
+        this.bandeira = bandeira;
+    }
+
+    public NivelCartao getNivelCartao() {
+        return nivelCartao;
+    }
+
+    public void setNivelCartao(NivelCartao nivelCartao) {
+        this.nivelCartao = nivelCartao;
+    }
+
+    
+    
 }

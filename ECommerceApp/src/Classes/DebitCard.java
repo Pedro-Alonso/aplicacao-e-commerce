@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 public class DebitCard extends PaymentCard{
     private double limiteEspecial;
     
-    public DebitCard(double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, int numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca, double limiteEspecial){
-        super(amount, dueDate, sender, receiver, numeroCartao, nomeCompleto, validade, codigoSeguranca);
+    public DebitCard(double limiteEspecial, double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, int numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca, Bandeira bandeira, NivelCartao nivelCartao) {
+        super(amount, dueDate, sender, receiver, numeroCartao, nomeCompleto, validade, codigoSeguranca, bandeira, nivelCartao);
         this.limiteEspecial = limiteEspecial;
     }
     

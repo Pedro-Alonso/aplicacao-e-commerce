@@ -6,8 +6,8 @@ import java.time.LocalDateTime;
 public class CreditCard extends PaymentCard{
     private double limiteCartao;
     
-    public CreditCard(double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, int numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca, double limiteCartao){
-        super(amount, dueDate, sender, receiver, numeroCartao, nomeCompleto, validade, codigoSeguranca);
+    public CreditCard(double limiteCartao, double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, int numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca, Bandeira bandeira, NivelCartao nivelCartao) {
+        super(amount, dueDate, sender, receiver, numeroCartao, nomeCompleto, validade, codigoSeguranca, bandeira, nivelCartao);
         this.limiteCartao = limiteCartao;
     }
 
@@ -64,7 +64,7 @@ public class CreditCard extends PaymentCard{
 
     public void exibirParcelas(int quantidadeParcelas){
 
-        if(valorParcelamento(quantidadeParcelas) == 0){
+        if(verificaQuantidadeParcela(quantidadeParcelas) == false){
             return;
         }
         
