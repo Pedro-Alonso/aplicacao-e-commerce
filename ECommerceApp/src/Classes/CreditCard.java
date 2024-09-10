@@ -4,16 +4,16 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class CreditCard extends PaymentCard{
-    private double limiteCartao;
+    private double cardLimit;
     
-    public CreditCard(double limiteCartao, double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, String numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca, Bandeira bandeira, NivelCartao nivelCartao) {
-        super(amount, dueDate, sender, receiver, numeroCartao, nomeCompleto, validade, codigoSeguranca, bandeira, nivelCartao);
-        this.limiteCartao = limiteCartao;
+    public CreditCard(double cardLimit, double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, String cardNumber, String fullName, LocalDate expirationDate, int securityCode, CardBrand cardBrand, CardLevel cardLevel) {
+        super(amount, dueDate, sender, receiver, cardNumber, fullName, expirationDate, securityCode, cardBrand, cardLevel);
+        this.cardLimit = cardLimit;
     }
 
     // verificar se as quantidades de parcelas são válidas
-    public boolean verificaQuantidadeParcela(int quantidadeParcelas){
-        if(quantidadeParcelas <= 0 || quantidadeParcelas > 12){
+    public boolean validateInstallmentQuantity(int installments){
+        if(installments <= 0 || installments > 12){
             return false; // não é possível
         }
 
@@ -21,8 +21,8 @@ public class CreditCard extends PaymentCard{
     }
 
     // Verificar limite do cartão
-    public boolean verificarLimite(double limiteCartao){
-        if(limiteCartao <= 0 || super.getAmount() > limiteCartao){
+    public boolean verifyLimit(double cardLimit){
+        if(cardLimit <= 0 || super.getAmount() > cardLimit){
             return false; // cartão não possui limite disponível ou o valor do produto é maior que o limite disponível
         }
         
@@ -30,47 +30,49 @@ public class CreditCard extends PaymentCard{
     }
 
     // Alterar o limitie do cartão
-    public double alterarLimite(double limiteCartao){
-        if(limiteCartao < 0){ // se o limite do cartão for menor que zero, não é possível deixar ele mais negativo
-            return limiteCartao;
+    public double updateLimit(double cardLimit){
+        if(cardLimit < 0){ // se o limite do cartão for menor que zero, não é possível deixar ele mais negativo
+            return cardLimit;
         }else{
-            limiteCartao -= super.getAmount();
+            cardLimit -= super.getAmount();
         }
         
-        return limiteCartao;
+        return cardLimit;
     }
 
     // Juros proveniente da taxa do banco
-    public double jurosBanco(){
+    public double bankFees(){
         return (super.getAmount()*0.02); // juros do banco sbore a transação de crédito de 2%
     }
 
     // possibilidade de parcelamento
-    public double valorParcelamento(int quantidadeParcelas){
-        if(verificarLimite(limiteCartao) == false || verificaQuantidadeParcela(quantidadeParcelas) == false){
+    public double installmentAmount(int installments){
+        if(verifyLimit(cardLimit) == false || validateInstallmentQuantity(installments) == false){
             return 0; // cartão não possui limite disponível ou as parcelas são inválidas
         }
         
         // uma só parcela não possui juros
-        if(quantidadeParcelas == 1){
+        if(installments == 1){
             return super.getAmount();
         }
 
-        double valorParcela = (super.getAmount()/quantidadeParcelas)*jurosBanco(); // o valor total já está no super
+        double installmentValue = (super.getAmount()/installments)*bankFees(); // o valor total já está no super
         
-        return valorParcela;
+        return installmentValue;
         
     }
 
-    public void exibirParcelas(int quantidadeParcelas){
-        if(verificaQuantidadeParcela(quantidadeParcelas) == false){
+
+    // função para testar
+    public void displayInstallments(int installments){
+        if(validateInstallmentQuantity(installments) == false){
             return;
         }
         
-        for(int i = 0; i < quantidadeParcelas; i++){
+        for(int i = 0; i < installments; i++){
             System.out.println("Data inicial: " + super.getPaymentDate().plusMonths(i+1));
             System.out.println("Parcela: " + (i+1));
-            System.out.println("Valor parcela: R$" + valorParcelamento(quantidadeParcelas));
+            System.out.println("Valor parcela: R$" + installmentAmount(installments));
             System.out.println("======================");
         }
 
@@ -79,12 +81,12 @@ public class CreditCard extends PaymentCard{
 
 
     // Getters and setters
-    public double getLimiteCartao() {
-        return limiteCartao;
+    public double getCardLimit() {
+        return cardLimit;
     }
 
-    public void setLimiteCartao(double limiteCartao) {
-        this.limiteCartao = limiteCartao;
+    public void setCardLimit(double cardLimit) {
+        this.cardLimit = cardLimit;
     }
      
 }

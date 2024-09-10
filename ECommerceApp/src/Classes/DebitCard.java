@@ -5,65 +5,65 @@ import java.time.LocalDateTime;
 
 
 public class DebitCard extends PaymentCard{
-    private double limiteEspecial;
-    private double saldo;
+    private double specialLimit;
+    private double balance;
     
-    public DebitCard(double saldo, double limiteEspecial, double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, String numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca, Bandeira bandeira, NivelCartao nivelCartao) {
-        super(amount, dueDate, sender, receiver, numeroCartao, nomeCompleto, validade, codigoSeguranca, bandeira, nivelCartao);
-        this.saldo = saldo;
-        this.limiteEspecial = limiteEspecial;
+    public DebitCard(double balance, double specialLimit, double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, String cardNumber, String fullName, LocalDate expirationDate, int securityCode, CardBrand cardBrand, CardLevel cardLevel) {
+        super(amount, dueDate, sender, receiver, cardNumber, fullName, expirationDate, securityCode, cardBrand, cardLevel);
+        this.balance = balance;
+        this.specialLimit = getSpecialLimit();
     }
     
     
     // verifica se a conta pode comprar
-    public boolean verificaCompra(){
-        double saldoConta = getSaldo();
-        double limiteEspecialConta = getLimiteEspecial();
+    public boolean verifyPurchase(){
+        double accountBalance = getBalance();
+        double accountSpecialLimit = getSpecialLimit();
         
-        if(saldoConta + limiteEspecialConta < 0){ // a conta não possui saldo e limite especial suficiente
+        if(accountBalance + accountSpecialLimit < 0){ // a conta não possui balance e limite especial suficiente
             return false;
         }
         
         return true;
     }
     
-    // altera saldo da conta
-    public double alteraSaldo(){
-        double valorProduto = super.getAmount();
+    // altera balance da conta
+    public double updateBalance(){
+        double productValue = super.getAmount();
         
-        if(verificaCompra() == false){ // não possui saldo suficiente para comprar
+        if(verifyPurchase() == false){ // não possui balance suficiente para comprar
             return 0;
         }
         
-        if(saldo > valorProduto){ // possível realizar a compra
-            saldo -= valorProduto;
-            return saldo;
+        if(balance > productValue){ // possível realizar a compra
+            balance -= productValue;
+            return balance;
         }
         
-        if(valorProduto > saldo + limiteEspecial){ // valor muito alto
+        if(productValue > balance + specialLimit){ // value muito alto
             return 0; 
         }else{
-            saldo -= valorProduto;
-            alteraLimiteEspecial(valorProduto);
+            balance -= productValue;
+            updateSpecialLimit(productValue);
         }
         
-        return saldo;
+        return balance;
     }
     
     // alterar limite especial da conta
-    public double alteraLimiteEspecial(double valor){
-        if(valor < 0){
-            return limiteEspecial;
+    public double updateSpecialLimit(double value){
+        if(value < 0){
+            return specialLimit;
         }
         
-        limiteEspecial -= valor;
-        return limiteEspecial;
+        specialLimit -= value;
+        return specialLimit;
     }
     
     
     // getters and setters
-    public double getLimiteEspecial() {
-        switch (super.getNivelCartao()) {
+    public double getSpecialLimit() {
+        switch (super.getCardLevel()) {
             case GOLD:
                 return 1000;
             case PLATINUM:
@@ -75,16 +75,16 @@ public class DebitCard extends PaymentCard{
         }
     }
 
-    public void setLimiteEspecial(double limiteEspecial) {
-        this.limiteEspecial = limiteEspecial;
+    public void setSpecialLimit(double specialLimit) {
+        this.specialLimit = specialLimit;
     }
 
-    public double getSaldo() {
-        return saldo;
+    public double getBalance() {
+        return balance;
     }
 
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
     
     

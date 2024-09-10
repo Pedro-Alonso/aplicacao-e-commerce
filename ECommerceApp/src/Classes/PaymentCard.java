@@ -5,14 +5,14 @@ import java.time.LocalDateTime;
 import java.util.Random;
 
 public class PaymentCard extends Payment{ 
-    private String numeroCartao;
-    private String nomeCompleto;
-    private LocalDate validade;
-    private int codigoSeguranca;
-    private Bandeira bandeira;
-    private NivelCartao nivelCartao;
+    private String cardNumber;
+    private String fullName;
+    private LocalDate expirationDate;
+    private int securityCode;
+    private CardBrand cardBrand;
+    private CardLevel cardLevel;
     
-    protected enum Bandeira{
+    protected enum CardBrand{
         MASTERCARD,
         VISA, 
         ELO, 
@@ -20,49 +20,49 @@ public class PaymentCard extends Payment{
         HIPERCARD
     } 
     
-    protected enum NivelCartao{
+    protected enum CardLevel{
         NORMAL,
         GOLD,
         PLATINUM,
         BLACK
     }
     
-    public PaymentCard(double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, String numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca, Bandeira bandeira, NivelCartao nivelCartao){ // extends Payment
+    public PaymentCard(double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, String cardNumber, String fullName, LocalDate expirationDate, int securityCode, CardBrand cardBrand, CardLevel cardLevel){ // extends Payment
         super(amount, dueDate, sender, receiver);
-        this.numeroCartao = gerarNumeroCartao();
-        this.nomeCompleto = nomeCompleto;
-        this.validade = gerarValidade();
-        this.codigoSeguranca = gerarCodigoSeguranca();
-        this.bandeira = bandeira;
-        this.nivelCartao = nivelCartao;
+        this.cardNumber = generateCardNumber();
+        this.fullName = fullName;
+        this.expirationDate = generateExpirationDate();
+        this.securityCode = generateSecurityCode();
+        this.cardBrand = cardBrand;
+        this.cardLevel = cardLevel;
     }
     
     
     // gerar os 16 números do cartão - Algoritmo de Luhn
-    private String gerarNumeroCartao(){
+    private String generateCardNumber(){
         Random random = new Random();
-        int cartao[] = new int[16];
+        int card[] = new int[16];
 
         // Gerar 15 números aleatórios
         for(int i = 0; i < 15; i++){
-            cartao[i] = random.nextInt(10); // numeros de 0 a 9
+            card[i] = random.nextInt(10); // numeros de 0 a 9
         }
 
         // Último algarismo é o verificador segundo o algoritmo
-        cartao[15] = LuhnTeste(cartao);
+        card[15] = LuhnAlgorithm(card);
         
         // Converter o array de números em string (fica mais fácil trabalhar depois)
-        StringBuilder NumeroCartaoGerado = new StringBuilder();
+        StringBuilder generatedCardNumber = new StringBuilder();
         
         // Usar um for each para cada elemento do array
-        for(int i = 0; i < cartao.length; i++){
-            NumeroCartaoGerado.append(cartao[i]);
+        for(int i = 0; i < card.length; i++){
+            generatedCardNumber.append(card[i]);
         }
         
-        return NumeroCartaoGerado.toString();
+        return generatedCardNumber.toString();
     }
     
-    private int LuhnTeste(int cartao[]){
+    private int LuhnAlgorithm(int card[]){
         // inverter os numeros 
         // somar os números na posiçõa ímpar (s1)
         // multiplicar por 2 os números na posição impar
@@ -71,24 +71,24 @@ public class PaymentCard extends Payment{
         // se s1+s2 tem como último digito 0, ele é válido
         
         int j = 0, s1 = 0, s2 = 0;
-        int numero[] = new int[16];
+        int number[] = new int[16];
         
-        for(int i = cartao.length - 1; i >= 0; i--){ // inverter os números
-            numero[j] = cartao[i];
+        for(int i = card.length - 1; i >= 0; i--){ // inverter os números
+            number[j] = card[i];
             j++;
         }
         
         j = 0;
         
-        for(int i = 0; i < numero.length - 1; i++){ 
+        for(int i = 0; i < number.length - 1; i++){ 
             if(i % 2 != 0){ // se for impar soma
-                s1 += numero[i];
+                s1 += number[i];
             }else{ // se for par multiplica por dois
-                numero[i] *= 2;
-                if(numero[i] > 9){ // se maior que 9, subtrai
-                    numero[i] -= 9;
+                number[i] *= 2;
+                if(number[i] > 9){ // se maior que 9, subtrai
+                    number[i] -= 9;
                 }
-                s2 += numero[i];
+                s2 += number[i];
             }
         }
         
@@ -96,76 +96,76 @@ public class PaymentCard extends Payment{
         
     } 
     
-    // gerar validade aleatória 
-    private LocalDate gerarValidade(){
+    // gerar expirationDate aleatória 
+    private LocalDate generateExpirationDate(){
         Random random = new Random();
-        LocalDate validadeAleatoria = LocalDate.now();
-        int dias = 1 + random.nextInt(28); // escolhe um dia entre 1 e 27  
-        int mes = 1 + random.nextInt(11); // escolhe um mês entre 1 e 12
-        int ano = random.nextInt(10); // escolhe um ano entre 0 a 10 anos pra frente
+        LocalDate randomExpirationDate = LocalDate.now();
+        int days = 1 + random.nextInt(28); // escolhe um dia entre 1 e 27  
+        int months = 1 + random.nextInt(11); // escolhe um mês entre 1 e 12
+        int year = random.nextInt(10); // escolhe um year entre 0 a 10 anos pra frente
         
-        validadeAleatoria = validadeAleatoria.plusDays(dias)
-                                             .plusMonths(mes)
-                                             .plusYears(ano);
+        randomExpirationDate = randomExpirationDate.plusDays(days)
+                                             .plusMonths(months)
+                                             .plusYears(year);
 
-        return validadeAleatoria;
+        return randomExpirationDate;
     }
 
     // gerar codigo de segurança aleatório
-    private int gerarCodigoSeguranca(){
-        Random codigoAleatorio = new Random();
-        return 100 + codigoAleatorio.nextInt(900); // vai gerar um número entre 100 e 999;
+    private int generateSecurityCode(){
+        Random randomCode = new Random();
+        return 100 + randomCode.nextInt(900); // vai gerar um número entre 100 e 999;
     }
     
     
     // Getters and Setters
-    public String getNumeroCartao() {
-        return numeroCartao;
+    public String getCardNumber() {
+        return cardNumber;
     }
 
-    public void setNumeroCartao(String numeroCartao) {
-        this.numeroCartao = numeroCartao;
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 
 
-    public String getNomeCompleto() {
-        return nomeCompleto;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setNomeCompleto(String nomeCompleto) {
-        this.nomeCompleto = nomeCompleto;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public LocalDate getValidade() {
-        return validade;
+    public LocalDate getExpirationDate() {
+        return expirationDate;
     }
 
-    public void setValidade(LocalDate validade) {
-        this.validade = validade;
+    public void setExpirationDate(LocalDate expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
-    public int getCodigoSeguranca() {
-        return codigoSeguranca;
+    public int getSecurityCode() {
+        return securityCode;
     }
 
-    public void setCodigoSeguranca(int codigoSeguranca) {
-        this.codigoSeguranca = codigoSeguranca;
+    public void setSecurityCode(int securityCode) {
+        this.securityCode = securityCode;
     }
 
-    public Bandeira getBandeira() {
-        return bandeira;
+    public CardBrand getBrand() {
+        return cardBrand;
     }
 
-    public void setBandeira(Bandeira bandeira) {
-        this.bandeira = bandeira;
+    public void setBrand(CardBrand cardBrand) {
+        this.cardBrand = cardBrand;
     }
 
-    public NivelCartao getNivelCartao() {
-        return nivelCartao;
+    public CardLevel getCardLevel() {
+        return cardLevel;
     }
 
-    public void setNivelCartao(NivelCartao nivelCartao) {
-        this.nivelCartao = nivelCartao;
+    public void setCardLevel(CardLevel cardLevel) {
+        this.cardLevel = cardLevel;
     }
 
     
