@@ -5,40 +5,55 @@ import java.util.UUID;
 
 public class Payment {
 
-  private UUID paymentId;
+  private UUID id;
+  private UUID orderId;
   private double amount;
   private LocalDateTime issueDate;
   private LocalDateTime dueDate;
   private LocalDateTime paymentDate;
   private PaymentStatus paymentStatus;
+  private PaymentType paymentType;
   private ECommerceUser sender;
   private ECommerceUser receiver;
 
-  public enum PaymentStatus {
+  public static enum PaymentStatus {
     PENDING,
     PAID,
     CANCELLED,
   }
 
+  public static enum PaymentType {
+    CREDIT_CARD,
+    DEBIT_CARD,
+    DIGITAL_CARD,
+    BOLETO,
+  }
+
   /**
    * Constructor for the Payment class
+   * @param orderId The order ID related to the payment -> {@link UUID}
    * @param amount The amount of the payment (in BRL) -> {@code double}
    * @param dueDate The due date of the payment -> {@link LocalDateTime}
+   * @param paymentType The payment type -> {@link PaymentType}
    * @param sender The sender of the payment -> {@link ECommerceUser}
    * @param receiver The receiver of the payment -> {@link ECommerceUser}
    */
   public Payment(
+    UUID orderId,
     double amount,
     LocalDateTime dueDate,
+    PaymentType paymentType,
     ECommerceUser sender,
     ECommerceUser receiver
   ) {
-    this.paymentId = UUID.randomUUID();
+    this.id = UUID.randomUUID();
+    this.orderId = orderId;
     this.amount = amount;
     this.issueDate = LocalDateTime.now();
     this.dueDate = dueDate;
     this.paymentDate = null;
     this.paymentStatus = PaymentStatus.PENDING;
+    this.paymentType = paymentType;
     this.sender = sender;
     this.receiver = receiver;
   }
@@ -56,19 +71,37 @@ public class Payment {
       Due date: %s
       Payment date: %s
       Payment status: %s
+      Payment type: %s
       Sender: %s
       Receiver: %s
       """,
-        paymentId,
+        id,
         amount,
         issueDate,
         dueDate,
         paymentDate,
         paymentStatus,
+        paymentType,
         sender,
         receiver
       )
     );
+  }
+
+  /**
+   * Method to get target Order ID
+   * {@return the orderId as a {@link UUID}}
+   */
+  public UUID getOrderId() {
+    return orderId;
+  }
+
+  /**
+   * Method to get the Payment Type
+   * {@return the paymentType as a {@link PaymentType}}
+   */
+  public PaymentType getPaymentType() {
+    return paymentType;
   }
 
   /**
@@ -88,10 +121,10 @@ public class Payment {
   }
 
   /**
-   * {@return the paymentId as a {@link UUID}}
+   * {@return the id as a {@link UUID}}
    */
   public UUID getPaymentId() {
-    return paymentId;
+    return id;
   }
 
   /**
