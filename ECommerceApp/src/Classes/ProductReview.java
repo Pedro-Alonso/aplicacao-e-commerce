@@ -13,10 +13,21 @@ public class ProductReview {
 	private ArrayList<ProductRating> ratings;
 	
 	// CONSTRUCTOR
-	public ProductReview() {
+	/**
+     * Constructs a ProductReview object.
+     *
+     * @param id    			the review's id
+     * @param product			the product that is referred in this review
+     * @param ratings    		the ratings that are in this review (ProductRating objects)
+     * @param averageRating 	the average rating of the product
+     * @param ratingCount		the total number of ratings 
+     */
+	
+	public ProductReview(Product product) {
 		this.id = UUID.randomUUID();
 		this.ratingCount = 0;
 		this.averageRating = 0;
+		this.product = product;
 	}
 
 	// METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -51,20 +62,19 @@ public class ProductReview {
 	}
 	
 	// Remove a rating 
-	public String removeRating(UUID id) {
+	public void removeRating(UUID id)throws Exception{
 		
 		// Searching for the rating
 		ProductRating rating = this.getRating(id);
 		
 		// If it exists, remove it and decrease the number of total ratings
-		if(id != null) {
+		if(rating != null) {
 			this.ratings.remove(rating);
 			this.ratingCount--;
-			return "success";
 		}
 		
 		// Otherwise, return an exception
-		return "EXCEPTION: Rating does not exist";
+		throw new Exception("The rating does not exist");
 	}
 	// =========================================================================================================================================================
 	
@@ -73,12 +83,12 @@ public class ProductReview {
 	// METHODS THAT CONCATENATE AND RETURN SPECIFIC INFORMATION -----------------------------------------------------------------------------------------------	
 	
 	// Returns all information regarding both the product rating and the individual ratings
-	public String getAllInfo() {
-		return this.getGeneralInfo() + "\n\n" + this.getRatingsInfo();
+	public String getAllInformation() {
+		return this.getGeneralInformation() + "\n\n" + this.getRatingsInformation();
 	}
 	
 	// Concatenates and returns the general information regarding the product ratings
-	public String getGeneralInfo() {
+	public String getGeneralInformation() {
 		
 		return (
 				"Product ID: " + this.id.toString() +
@@ -90,13 +100,13 @@ public class ProductReview {
 	}
 	
 	// Concatenates and returns the information of all ratings
-	public String getRatingsInfo(){
+	public String getRatingsInformation(){
 		
 		if (this.ratings == null) {
 			
 			StringBuilder information = new StringBuilder("ALL RATINGS: \n\n");
 			for (ProductRating rating : this.ratings) {
-			information.append(rating.getInfo()).append("\n\n");}
+			information.append(rating.getInformation()).append("\n\n");}
 			return information.toString();
 		}
 		else return "EXCEPTION: No ratings";
