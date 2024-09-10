@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-public class PaymentCard extends Payment{ // extends Payment
+public class PaymentCard extends Payment{ 
     private String numeroCartao;
     private String nomeCompleto;
     private LocalDate validade;
@@ -37,12 +37,6 @@ public class PaymentCard extends Payment{ // extends Payment
         this.nivelCartao = nivelCartao;
     }
     
-    // verificar se o cartão existe
-    public void existenciaCartao(){
-        
-    }
-    
-    // verificar qual o modelo do cartão (crédito, débito ou digital)
     
     // gerar os 16 números do cartão - Algoritmo de Luhn
     private String gerarNumeroCartao(){
@@ -174,6 +168,5 @@ public class PaymentCard extends Payment{ // extends Payment
         this.nivelCartao = nivelCartao;
     }
 
-    
     
 }

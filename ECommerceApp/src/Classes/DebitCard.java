@@ -8,7 +8,7 @@ public class DebitCard extends PaymentCard{
     private double limiteEspecial;
     private double saldo;
     
-    public DebitCard(double saldo, double limiteEspecial, double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, int numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca, Bandeira bandeira, NivelCartao nivelCartao) {
+    public DebitCard(double saldo, double limiteEspecial, double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, String numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca, Bandeira bandeira, NivelCartao nivelCartao) {
         super(amount, dueDate, sender, receiver, numeroCartao, nomeCompleto, validade, codigoSeguranca, bandeira, nivelCartao);
         this.saldo = saldo;
         this.limiteEspecial = limiteEspecial;
@@ -63,7 +63,16 @@ public class DebitCard extends PaymentCard{
     
     // getters and setters
     public double getLimiteEspecial() {
-        return limiteEspecial;
+        switch (super.getNivelCartao()) {
+            case GOLD:
+                return 1000;
+            case PLATINUM:
+                return 2500;
+            case BLACK:
+                return 5000;
+            default:
+                return 0;
+        }
     }
 
     public void setLimiteEspecial(double limiteEspecial) {
