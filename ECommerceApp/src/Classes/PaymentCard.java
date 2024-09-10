@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-public class PaymentCard extends Payment{
-    private int numeroCartao;
+public class PaymentCard extends Payment{ // extends Payment
+    private String numeroCartao;
     private String nomeCompleto;
     private LocalDate validade;
     private int codigoSeguranca;
@@ -27,9 +27,9 @@ public class PaymentCard extends Payment{
         BLACK
     }
     
-    public PaymentCard(double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, int numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca, Bandeira bandeira, NivelCartao nivelCartao){
+    public PaymentCard(double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, String numeroCartao, String nomeCompleto, LocalDate validade, int codigoSeguranca, Bandeira bandeira, NivelCartao nivelCartao){ // extends Payment
         super(amount, dueDate, sender, receiver);
-        this.numeroCartao = numeroCartao;
+        this.numeroCartao = gerarNumeroCartao();
         this.nomeCompleto = nomeCompleto;
         this.validade = gerarValidade();
         this.codigoSeguranca = gerarCodigoSeguranca();
@@ -44,8 +44,66 @@ public class PaymentCard extends Payment{
     
     // verificar qual o modelo do cartão (crédito, débito ou digital)
     
+    // gerar os 16 números do cartão - Algoritmo de Luhn
+    private String gerarNumeroCartao(){
+        Random random = new Random();
+        int cartao[] = new int[16];
+
+        // Gerar 15 números aleatórios
+        for(int i = 0; i < 15; i++){
+            cartao[i] = random.nextInt(10); // numeros de 0 a 9
+        }
+
+        // Último algarismo é o verificador segundo o algoritmo
+        cartao[15] = LuhnTeste(cartao);
+        
+        // Converter o array de números em string (fica mais fácil trabalhar depois)
+        StringBuilder NumeroCartaoGerado = new StringBuilder();
+        
+        // Usar um for each para cada elemento do array
+        for(int i = 0; i < cartao.length; i++){
+            NumeroCartaoGerado.append(cartao[i]);
+        }
+        
+        return NumeroCartaoGerado.toString();
+    }
+    
+    private int LuhnTeste(int cartao[]){
+        // inverter os numeros 
+        // somar os números na posiçõa ímpar (s1)
+        // multiplicar por 2 os números na posição impar
+        // soma os algoritmos da soma separadamente (16 -> 1+6=7) ou se ele for > 9, subtrair 9
+        // somar os algoritmos juntos (s2)
+        // se s1+s2 tem como último digito 0, ele é válido
+        
+        int j = 0, s1 = 0, s2 = 0;
+        int numero[] = new int[16];
+        
+        for(int i = cartao.length - 1; i >= 0; i--){ // inverter os números
+            numero[j] = cartao[i];
+            j++;
+        }
+        
+        j = 0;
+        
+        for(int i = 0; i < numero.length - 1; i++){ 
+            if(i % 2 != 0){ // se for impar soma
+                s1 += numero[i];
+            }else{ // se for par multiplica por dois
+                numero[i] *= 2;
+                if(numero[i] > 9){ // se maior que 9, subtrai
+                    numero[i] -= 9;
+                }
+                s2 += numero[i];
+            }
+        }
+        
+        return (10 - ((s1+s2) % 10)) % 10; // retorna um digíto que possui o último número soma
+        
+    } 
+    
     // gerar validade aleatória 
-    public LocalDate gerarValidade(){
+    private LocalDate gerarValidade(){
         Random random = new Random();
         LocalDate validadeAleatoria = LocalDate.now();
         int dias = 1 + random.nextInt(28); // escolhe um dia entre 1 e 27  
@@ -60,18 +118,18 @@ public class PaymentCard extends Payment{
     }
 
     // gerar codigo de segurança aleatório
-    public int gerarCodigoSeguranca(){
+    private int gerarCodigoSeguranca(){
         Random codigoAleatorio = new Random();
         return 100 + codigoAleatorio.nextInt(900); // vai gerar um número entre 100 e 999;
     }
     
     
     // Getters and Setters
-    public int getNumeroCartao() {
+    public String getNumeroCartao() {
         return numeroCartao;
     }
 
-    public void setNumeroCartao(int numeroCartao) {
+    public void setNumeroCartao(String numeroCartao) {
         this.numeroCartao = numeroCartao;
     }
 
