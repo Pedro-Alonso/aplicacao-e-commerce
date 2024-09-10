@@ -2,6 +2,7 @@ package ECommerceApp.src.Classes;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 public class PaymentSlip extends Payment {
     private final double fineRate;
@@ -14,21 +15,25 @@ public class PaymentSlip extends Payment {
     /**
      * Constructs a PaymentSlip object.
      *
+     * @param orderId       the order ID related to the payment
      * @param amount        the amount of the payment
      * @param dueDate       the due date of the payment
+     * @param paymentType   the payment type
      * @param sender        the sender of the payment
      * @param receiver      the receiver of the payment
      * @param fineRate      the fine rate for late payment (up to 2%)
      * @param feeRatePerDay the fee rate per day for late payment (up to 0.033%)
      */
     public PaymentSlip(
+        UUID orderId,
         double amount,
         LocalDateTime dueDate,
+        PaymentType paymentType,
         ECommerceUser sender,
         ECommerceUser receiver,
         double fineRate,
         double feeRatePerDay) {
-        super(amount, dueDate, sender, receiver);
+        super(orderId, amount, dueDate, paymentType, sender, receiver);
 
         // validate whether the fine rate is legal or not
         if (fineRate > MAX_FINE_RATE) {

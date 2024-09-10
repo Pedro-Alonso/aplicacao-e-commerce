@@ -1,6 +1,7 @@
 package ECommerceApp.src.Classes;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class ECommerceUser extends User {
 
@@ -28,8 +29,8 @@ public class ECommerceUser extends User {
   }
 
   // Faz um pedido com base no carrinho atual
-  public void placeOrder() {
-    Order newOrder = new Order(this.cart, this);
+  public void placeOrder(UUID deliveryAddressId, Cart cart) {
+    Order newOrder = new Order(this.getId(),deliveryAddressId, cart);
     this.orders.add(newOrder);
     this.cart.clear(); // Limpa o carrinho após o pedido
   }

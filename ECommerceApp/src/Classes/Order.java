@@ -42,6 +42,26 @@ public class Order {
   }
 
   /**
+   * Constructor for Order class
+   * @param customerId The customer creating the Order ID -> {@link UUID}
+   * @param deliveryAddressId The delivery address ID -> {@link UUID}
+   * @param cart The cart containing the products -> {@link Cart}
+   */
+  public Order(UUID customerId, UUID deliveryAddressId, Cart cart) {
+    this.id = UUID.randomUUID();
+    this.customerId = customerId;
+    this.createdAt = LocalDateTime.now();
+    this.updatedAt = null;
+    this.status = OrderStatus.DRAFT;
+    this.deliveryAddressId = deliveryAddressId;
+    this.totalAmount = cart.getTotalAmount();
+    this.productIds = new ArrayList<>();
+    for (Product product : cart.getProducts()) {
+      this.productIds.add(product.getId());
+    }
+  }
+
+  /**
    * {@return the attributes of the Order object as a {@link String}}
    */
   public String displayOrder() {
