@@ -3,6 +3,8 @@ import java.util.UUID;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import ECommerceApp.src.Interfaces.BidirectionalVoting;
+
 public class ProductRating { 
 	
 	// ATTRIBUTES
