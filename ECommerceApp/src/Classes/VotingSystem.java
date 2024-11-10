@@ -1,12 +1,14 @@
 package ECommerceApp.src.Classes;
 
+import ECommerceApp.src.Interfaces.Votable;
+
 // Enum to represent vote types
 enum VoteType {
     UP_VOTE,
     DOWN_VOTE
 }
 
-class VotingSystem {
+class VotingSystem implements Votable {
 
     // Set instead of arrayList, so that duplicate values are not allowed
     private Set<ECommerceUser> upVoters;
@@ -52,7 +54,7 @@ class VotingSystem {
         downVoters.add(voter);
     }
 
-    public void removeVote(ECommerceUser user) throws Exception {
+    public void removeVote(ECommerceUser voter) throws Exception {
         boolean removed = upVoters.remove(user) || downVoters.remove(user);
         if (!removed) {
             throw new Exception("No votes found for this user");
