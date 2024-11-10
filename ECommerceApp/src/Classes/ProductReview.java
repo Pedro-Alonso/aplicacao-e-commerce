@@ -3,7 +3,7 @@ import java.util.UUID;
 import java.util.ArrayList;
 import java.lang.StringBuilder;
 
-public class ProductReview {
+public class ProductReview { 
 	
 	// ATTRIBUTES
 	private Product product;
@@ -12,15 +12,10 @@ public class ProductReview {
 	private float averageRating;
 	private ArrayList<ProductRating> ratings;
 	
-	// CONSTRUCTOR
+	// CONSTRUCTOR	
 	/**
      * Constructs a ProductReview object.
-     *
-     * @param id    			the review's id
      * @param product			the product that is referred in this review
-     * @param ratings    		the ratings that are in this review (ProductRating objects)
-     * @param averageRating 	the average rating of the product
-     * @param ratingCount		the total number of ratings 
      */
 	
 	public ProductReview(Product product) {
@@ -45,8 +40,8 @@ public class ProductReview {
 		// Increasing the rating count
 		this.ratingCount++;
 		
-		// Recalculating the average of ratings and updating it
-		this.averageRating = this.calculateAverageRating();
+		// Updating the average rating
+		this.updateAverageRating();
 	}
 	
 	// Search and return a specific rating, or null
@@ -67,14 +62,19 @@ public class ProductReview {
 		// Searching for the rating
 		ProductRating rating = this.getRating(id);
 		
-		// If it exists, remove it and decrease the number of total ratings
-		if(rating != null) {
-			this.ratings.remove(rating);
-			this.ratingCount--;
+		// If it does not exist, throw an exception
+		if(rating == null) {
+			throw new Exception("The rating does not exist");
 		}
+
+		// Otherwise, remove it and decrease the number of total ratings
+
+		this.ratings.remove(rating);
+		this.ratingCount--;
+
+		// And update the new average rating
+		this.updateAverageRating();
 		
-		// Otherwise, return an exception
-		throw new Exception("The rating does not exist");
 	}
 	// =========================================================================================================================================================
 	
@@ -117,14 +117,18 @@ public class ProductReview {
 	// OTHER METHODS ------------------------------------------------------------------------------------------------------------------------------------------
 	
 	// Calculating the average rating for the given product
-		private float calculateAverageRating() {
-
+		private void updateAverageRating() {
+			
+			if(this.ratingCount == 0){
+				return 0;
+			}
+	
 			int starCount = 0;
-			for(ProductRating rating : ratings) {
+			for(ProductRating rating : this.ratings) {
 				starCount += rating.getStars();
 			}
 			
-			return starCount / this.ratingCount;
+			this.averageRating = starCount / this.ratingCount;
 			
 		}
 		
