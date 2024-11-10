@@ -18,7 +18,7 @@ public class Order {
   public static enum OrderStatus {
     PENDING,
     CONFIRMED,
-    PAYED
+    CANCELLED
   }
   
   public static enum PaymentStatus {
@@ -51,65 +51,26 @@ public class Order {
     this.paymentStatus = PaymentStatus.PENDING;
   }
 
-  /**
-   * {@return the attributes of the Order object as a {@link String}}
-   */
-  public String displayOrder() {
-    return (
-      String.format(
-        """
-                Order ID: %s
-                Created at: %s
-                Updated at: %s
-                Status: %s
-                Billing Address ID: %s
-                Total Amount: %s
-                Product IDs: %s
-                """,
-        this.id,
-        this.createdAt,
-        this.updatedAt,
-        this.status,
-        this.billingAddress,
-        this.cart.getTotalPrice(),
-        this.productIds.size()
-      )
-    );
+  // ORDER PROCESSING METHODS
+  public void confirmOrder() {
+    if (this.status == OrderStatus.PENDING && this.paymentStatus == PaymentStatus.COMPLETED) {
+        this.status = OrderStatus.CONFIRMED;
+        this.updateTimestamp();
+    } else {
+        throw new IllegalStateException("Order cannot be confirmed. Check payment status.");
+    }
   }
 
-  /**
-   * {@return the Order ID}
-   */
-  public UUID getId() {
-    return this.id;
+  public void cancelOrder() {
+    if (this.status != OrderStatus.CONFIRMED) {
+        this.status = OrderStatus.CANCELLED;
+        this.updateTimestamp();
+    } else {
+        throw new IllegalStateException("Cannot cancel order after confirmation.");
+    }
   }
 
-  /**
-   * {@return the Created At date}
-   */
-  public LocalDateTime getCreatedAt() {
-    return this.createdAt;
-  }
 
-  /**
-   * {@return the Updated At date}
-   */
-  public LocalDateTime getUpdatedAt() {
-    return this.updatedAt;
-  }
 
-  /**
-   * {@return the Order Status}
-   */
-  public OrderStatus getStatus() {
-    return this.status;
-  }
-
-  /**
-   * {@return the Delivery Address ID}
-   */
-  public Adress billingAddress() {
-    return this.billingAddress;
-  }
 
 }
