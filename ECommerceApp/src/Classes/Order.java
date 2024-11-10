@@ -1,14 +1,7 @@
 package ECommerceApp.src.Classes;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.UUID;
-
-// removed userId, since order will be stored in the user
-// Changed delivery adress to billing address
-// Simplified the possible statuses
-// Removed array of product IDs and totalAmount, since both are already int the cart
-// Deleted a most of the code, since it made no fucking sense
 
 public class Order {
 
@@ -16,14 +9,30 @@ public class Order {
   private LocalDateTime createdAt; 
   private LocalDateTime updatedAt;
   private OrderStatus status;
-  private Address billingAddress;
+  private BillingAddress billingAddress;
   private Cart cart;
+  private PaymentStatus paymentStatus;
+  private PaymentMethod paymentMethod;
+
 
   public static enum OrderStatus {
     PENDING,
     CONFIRMED,
+    PAYED
+  }
+  
+  public static enum PaymentStatus {
+    PENDING,
+    COMPLETED,
+    FAILED,
+    REFUNDED
   }
 
+  public static enum PaymentMethod {
+    CREDIT_CARD,
+    DEBIT_CARD,
+    BANK_TRANSFER
+  }
 
   /**
    * Constructor for Order class
@@ -31,13 +40,15 @@ public class Order {
    * @param cart The cart containing the products -> {@link Cart}
    */
 
-  public Order(UUID billingAddress, Cart cart) {
+  public Order(BillingAddress billingAddress, Cart cart, PaymentMethod paymentMethod) {
     this.id = UUID.randomUUID();
     this.createdAt = LocalDateTime.now();
-    this.updatedAt = null;
-    this.status = OrderStatus.DRAFT;
+    this.updatedAt = LocalDateTime.now();
+    this.status = OrderStatus.PENDING;
     this.billingAddress = billingAddress;
     this.cart = cart;
+    this.paymentMethod = paymentMethod;
+    this.paymentStatus = PaymentStatus.PENDING;
   }
 
   /**
