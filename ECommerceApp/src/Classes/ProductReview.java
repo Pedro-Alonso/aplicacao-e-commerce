@@ -30,9 +30,24 @@ public class ProductReview {
 	
 	// METHODS RELATED TO THE MANAGEMENT OF INDIVIDUAL RATINGS ------------------------------------------------------------------------------------------------
 	
+	private boolean isRaterValid(ECommerceUser rater){
+		
+		for(Order order : rater.orders){
+			if(order.product == this.product){
+				if(order.status == delivered){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	// Adding a specific rating to the product rating list
 	public void addRating(ECommerceUser rater, int stars, String comment) {
 		
+		// Check whether the user can rate the product (has bought it)
+		if(!isRaterValid(rater)) throw new Exception("The user can't rate a product he has not purchased!");
+
 		// Adding the new rating to the list of ratings
 		ProductRating newRating = new ProductRating(comment, rater, stars);
 		ratings.add(newRating);
