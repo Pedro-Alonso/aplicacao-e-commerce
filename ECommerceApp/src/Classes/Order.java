@@ -70,6 +70,28 @@ public class Order {
     }
   }
 
+  // PAYMENT HANDLING METHODS
+  public void completePayment() {
+    this.paymentStatus = PaymentStatus.COMPLETED;
+    this.updateTimestamp();
+  }
+
+  public void failPayment() {
+      this.paymentStatus = PaymentStatus.FAILED;
+      this.updateTimestamp();
+  }
+
+  public void refundPayment() {
+      if (this.paymentStatus == PaymentStatus.COMPLETED) {
+          this.paymentStatus = PaymentStatus.REFUNDED;
+          this.updateTimestamp();
+      } else {
+          throw new IllegalStateException("Cannot refund payment that hasn't been completed.");
+      }
+  }
+  private void updateTimestamp() {
+      this.updatedAt = LocalDateTime.now();
+  }  
 
 
 
