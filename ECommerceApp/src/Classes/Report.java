@@ -2,7 +2,7 @@ package ECommerceApp.src.Classes;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class Report {
+public class Report { 
 	
 	private UUID id;
 	private ECommerceUser reporter;
@@ -15,13 +15,10 @@ public class Report {
 	/**
      * Constructs a Report object.
      *
-     * @param id    		the report's id
-     * @param reporter 		the user that has reported the rating
-     * @param reason		the reporter's reason for the report
      * @param description   Further information on the report provided by the reporter
-     * @param creationDate  the time of object creation
-     * @param lastEditDate  the last time the object's attributes have been changed
-     */
+     * @param reason		the reporter's reason for the report
+     * @param reporter 		the user that has reported the rating
+     */ 
 	public Report(String description, String reason, ECommerceUser reporter) {
 		
 		this.id = UUID.randomUUID();
