@@ -1,5 +1,8 @@
 package ECommerceApp.src.Classes;
 import java.util.UUID;
+
+import ECommerceApp.src.Classes.Order.PaymentStatus;
+
 import java.util.ArrayList;
 import java.lang.StringBuilder;
 
@@ -32,18 +35,28 @@ public class ProductReview {
 	
 	private boolean isRaterValid(ECommerceUser rater){
 		
-		for(Order order : rater.orders){
-			if(order.product == this.product){
-				if(order.status == delivered){
-					return true;
+		// Para cada pedido de um usuário, 
+		for(Order order : rater.getOrders()){
+				for(Product product : order.getCart().getProducts()) {
+					
+					// Caso o produto que esteja sendo avaliado estiver no pedido
+					if(product.getId() == this.product.getId()) {
+						
+						// E o pagamento do pedido foi feito
+						if(order.getPaymentStatus() == PaymentStatus.COMPLETED){
+							// O usuário pode avaliar o produto
+							return true;
+						}
+						
+
+					}
 				}
-			}
 		}
 		return false;
 	}
 
 	// Adding a specific rating to the product rating list
-	public void addRating(ECommerceUser rater, int stars, String comment) {
+	public void addRating(ECommerceUser rater, int stars, String comment) throws Exception{
 		
 		// Check whether the user can rate the product (has bought it)
 		if(!isRaterValid(rater)) throw new Exception("The user can't rate a product he has not purchased!");
@@ -135,7 +148,7 @@ public class ProductReview {
 		private void updateAverageRating() {
 			
 			if(this.ratingCount == 0){
-				return 0;
+				this.averageRating = 0;
 			}
 	
 			int starCount = 0;
