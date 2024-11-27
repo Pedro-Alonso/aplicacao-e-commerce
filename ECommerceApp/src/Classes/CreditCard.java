@@ -7,7 +7,7 @@ public class CreditCard extends PaymentCard{
     private double cardLimit;
     
     public CreditCard(double cardLimit, double amount, LocalDateTime dueDate, ECommerceUser sender, ECommerceUser receiver, String cardNumber, String fullName, LocalDate expirationDate, int securityCode, CardBrand cardBrand, CardLevel cardLevel) {
-        super(amount, dueDate, sender, receiver, cardNumber, fullName, expirationDate, securityCode, cardBrand, cardLevel);
+        super(orderId, amount, dueDate, paymentType, sender, receiver, cardNumber, fullName, expirationDate, securityCode, cardBrand, cardLevel);
         this.cardLimit = cardLimit;
     }
 
