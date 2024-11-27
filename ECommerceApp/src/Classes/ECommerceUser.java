@@ -1,7 +1,6 @@
 package ECommerceApp.src.Classes;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class ECommerceUser extends User {
 
@@ -25,12 +24,12 @@ public class ECommerceUser extends User {
 
   // Remove um produto do carrinho
   public void removeFromCart(Product product) {
-    this.cart.remove(product);
+	  this.cart.remove(product);
   }
 
   // Faz um pedido com base no carrinho atual
-  public void placeOrder(UUID deliveryAddressId, Cart cart) {
-    Order newOrder = new Order(this.getId(),deliveryAddressId, cart);
+  public void placeOrder(BillingAddress billingAddress, Cart cart, Order.PaymentMethod paymentMethod) {
+    Order newOrder = new Order(billingAddress, cart, paymentMethod);
     this.orders.add(newOrder);
     this.cart.clear(); // Limpa o carrinho após o pedido
   }

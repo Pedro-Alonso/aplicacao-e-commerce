@@ -1,8 +1,8 @@
-package ECommerceApp.src.Interfaces;
+package ECommerceApp.src.Classes;
+
 
 public interface BidirectionalVoting {
-    public void upVote(ECommerceUser voter) throws Exception;
-    public void downVote(ECommerceUser voter) throws Exception;
+    public void addVote(ECommerceUser user, VotingSystem.VoteType type) throws Exception;
     public void removeVote(ECommerceUser user)throws Exception;
     public int getUpVoteCount();
     public int getDownVoteCount();

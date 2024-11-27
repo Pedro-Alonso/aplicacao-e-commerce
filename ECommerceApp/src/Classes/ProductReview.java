@@ -47,11 +47,10 @@ public class ProductReview {
 							// O usuário pode avaliar o produto
 							return true;
 						}
-						
-
 					}
 				}
 		}
+		
 		return false;
 	}
 

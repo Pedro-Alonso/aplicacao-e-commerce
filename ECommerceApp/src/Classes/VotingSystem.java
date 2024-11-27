@@ -1,14 +1,18 @@
 package ECommerceApp.src.Classes;
 
-import ECommerceApp.src.Interfaces.Votable;
+import java.util.Set;
+import java.util.HashSet;
 
-// Enum to represent vote types
-enum VoteType {
-    UP_VOTE,
-    DOWN_VOTE
-}
 
-class VotingSystem implements Votable {
+
+public class VotingSystem implements BidirectionalVoting {
+	
+	
+	// Enum to represent vote types
+	enum VoteType {
+	    UP_VOTE,
+	    DOWN_VOTE
+	}
 
     // Set instead of arrayList, so that duplicate values are not allowed
     private Set<ECommerceUser> upVoters;
@@ -21,7 +25,7 @@ class VotingSystem implements Votable {
     }
 
 
-    public void vote(ECommerceUser voter, VoteType voteType) throws Exception {
+    public void addVote(ECommerceUser voter, VoteType voteType) throws Exception {
         switch (voteType) {
             case UP_VOTE:
                 handleUpVote(voter);
@@ -55,7 +59,7 @@ class VotingSystem implements Votable {
     }
 
     public void removeVote(ECommerceUser voter) throws Exception {
-        boolean removed = upVoters.remove(user) || downVoters.remove(user);
+        boolean removed = upVoters.remove(voter) || downVoters.remove(voter);
         if (!removed) {
             throw new Exception("No votes found for this user");
         }

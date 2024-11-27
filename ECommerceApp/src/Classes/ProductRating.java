@@ -3,8 +3,6 @@ import java.util.UUID;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import ECommerceApp.src.Interfaces.BidirectionalVoting;
-
 public class ProductRating { 
 	
 	// ATTRIBUTES
@@ -55,12 +53,12 @@ public class ProductRating {
 	
 	
 	public void upVote(ECommerceUser voter) throws Exception {
-		votingSystem.vote(voter, UP_VOTE);
+		votingSystem.addVote(voter, VotingSystem.VoteType.UP_VOTE);
 		
 	}
 
 	public void downVote(ECommerceUser voter) throws Exception {
-		votingSystem.vote(voter, DOWN_VOTE)
+		votingSystem.addVote(voter, VotingSystem.VoteType.DOWN_VOTE);
 		
 	}
 	
@@ -106,7 +104,7 @@ public class ProductRating {
 		this.reports.add(report);
 	}
 	
-	public void removeReport(UUID reportId) {
+	public void removeReport(UUID reportID) {
 		
 		Report report = this.getReport(reportID);
 		if(report != null) this.reports.remove(report);
@@ -144,7 +142,7 @@ public class ProductRating {
 		}
 	
 		public int getDownVoteCount() {
-			return votingSystem.getDownVoteCount()
+			return votingSystem.getDownVoteCount();
 		}
 	
 		public int getTotalVoteCount() {
