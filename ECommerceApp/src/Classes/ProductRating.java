@@ -3,202 +3,220 @@ import java.util.UUID;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+/**
+ * Represents a rating for a specific product in an e-commerce application.
+ * The `ProductRating` class encapsulates the information related to a product
+ * rating, including the user who provided the rating, the number of stars, the
+ * comment, and the creation and last edit dates. It also manages the voting
+ * system and the reports associated with the rating.
+ *
+ * @author Racciatti
+ * @version 1.2
+ * @see Report
+ */
 public class ProductRating {
-	
-	// ATTRIBUTES
-	private String comment;
-	private ECommerceUser rater;
-	private UUID id;
-	private LocalDateTime creationDate;
-	private LocalDateTime lastEditDate;
-	private int stars;
-	private ArrayList<Report> reports;
-	private ArrayList<ECommerceUser> upVoters;
-	private ArrayList<ECommerceUser> downVoters;
-	
-	
-	// CONSTRUCTOR
-	/**
-     * Constructs a ProductRating object.
-     *
-     * @param id    		the rating's id
-     * @param rater			the user that has created this rating
-     * @param comment    	the comment the user created when creating this rating	
-     * @param stars 		the number of stars the user has rated
-     * @param creationDate  the time of object creation
-     * @param lastEditDate  the last time the object's attributes have been changed
-     * @param reports 		a list of reports created for this rating
-     * @param downVoters	a list of users that have downvoted the rating 
-     * @param upVoters		a list of users that have upvoted the rating 
+
+    /**
+     * The comment provided by the user for the product rating.
      */
-	public ProductRating(String comment, ECommerceUser rater, int stars) 
-	{
-		this.id = UUID.randomUUID();
-		this.stars = stars;
-		this.comment = comment;
-		this.creationDate = LocalDateTime.now();
-		this.lastEditDate = LocalDateTime.now();
-		this.rater = rater;
-		this.upVoters = new ArrayList<ECommerceUser>();
-		this.downVoters = new ArrayList<ECommerceUser>();
-	}
-	
-	
-	// METHODS -------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	
-	// Returns the rating's information
-	public String getInformation() {
-		return  ("Rating ID: " + this.id.toString() +
-				"\nRater ID: " + this.rater.getId() + 
-				"\nDate: " + this.creationDate.toString() +
-				"\nLast changed: " + this.lastEditDate.toString() + 
-				"\nStars: " + Integer.toString(this.stars) + 
-				"\nComment: " + this.comment);
-	}
-	
-	// METHODS RELATED TO VOTES -------------------------------------------------------------------------------------------------------------
-	
-	// Logic for managing votes
-	public void upVote(ECommerceUser voter) throws Exception {
-		
-		
-		// If the user has not voted yet, add the vote
-		if (!this.downVoters.contains(voter) && !this.upVoters.contains(voter)) {
-			this.downVoters.add(voter);
-		}
-		else {
-			
-			// If the user has already up voted, block this action
-			if(this.upVoters.contains(voter)) {
-				throw new Exception("The user has already up voted!"); 
-			}
-			
-			// If the user has down voted, its vote will be removed and the up vote will be added
-			if(this.downVoters.contains(voter)) {
-				this.removeVote(voter);
-				this.upVoters.add(voter);
-				
-			}
-		}
-		
-	}
-	
-	public void downVote(ECommerceUser downVoter) throws Exception {
-		
-		
-		// If the user has not voted yet, add the vote
-		if (!this.downVoters.contains(downVoter) && !this.upVoters.contains(downVoter)) {
-			this.downVoters.add(downVoter);
-		}
-		else {
-			
-			// If the user has already down voted, block this action
-			if(this.downVoters.contains(downVoter)) {
-				throw new Exception("The user has already down voted!"); 
-			}
-			
-			// If the user has up voted, its vote will be removed and the down vote will be added
-			if(this.upVoters.contains(downVoter)) {
-				this.removeVote(downVoter);
-				this.downVoters.add(downVoter);
-				
-			}
-		}
-		
-	}
-	
-	public void removeVote(ECommerceUser user)throws Exception{
-		
-		if(this.downVoters.contains(user)) {
-			this.downVoters.remove(user);
-		}
-		else if(this.upVoters.contains(user)) {
-			this.upVoters.remove(user);
-		}
-		else {
-			throw new Exception("There are no votes associated with this user");
-		}
-	}
-	
-	
-	// METHODS RELATED TO REPORTS ------------------------------------------------------------------------------------------------------------
-	
-	// Returns the required report or null
-	public Report getReport(UUID reportId) {
-		
-		for(Report report : this.reports) {
-			
-			if(report.getId() == reportId){
-				return report;
-			}
-			
-		}
-		return null;
-	}
-	
-	public String getReportsInformation() {
-	
-		String information = "REPORTS INFORMATION: \n\n";
-		
-		for(Report report : this.reports) {
-			information = information + report.getInformation() + "\n\n";
-		}
-		
-		return information;
-		
-	}
-	
-	public int getReportCount() {
-		return this.reports.size();
-	}
+    private String comment;
 
-	public void addReport(Report report) {
-		this.reports.add(report);
-	}
-	
-	public void removeReport(UUID reportId) {
-		
-		for(Report report : this.reports) {
-			
-			if(report.getId() == reportId) {
-				this.reports.remove(report);
-			}
-		}
-		
-	}
+    /**
+     * The user who provided the product rating.
+     */
+    private ECommerceUser rater;
 
-	
-	// GETTERS AND SETTERS --------------------------------------------------------------------------------------------------------------------------------------
+    /**
+     * Unique identifier for the product rating.
+     */
+    private UUID id;
 
-	    public UUID getId() {
-	        return id;
-	    }
+    /**
+     * The date and time when the product rating was created.
+     */
+    private LocalDateTime creationDate;
 
-	    public ECommerceUser getRater() {
-	        return rater;
-	    }
+    /**
+     * The date and time when the product rating was last edited.
+     */
+    private LocalDateTime lastEditDate;
 
-	    public int getStars() {
-	        return stars;
-	    }
+    /**
+     * The number of stars (rating) provided by the user.
+     */
+    private int stars;
 
-	    public void setStars(int stars) {
-	        this.lastEditDate = LocalDateTime.now();
-	    	this.stars = stars;
-	    }
+    /**
+     * List of reports associated with the product rating.
+     */
+    private ArrayList<Report> reports;
 
-	    public LocalDateTime getCreationDate() {
-	        return creationDate;
-	    }
+    /**
+     * The voting system associated with the product rating.
+     */
+    private VotingSystem votingSystem;
 
-	    public String getComment() {
-	        return comment;
-	    }
+    /**
+     * Constructs a `ProductRating` object with the specified rating information.
+     *
+     * @param comment The comment provided by the user.
+     * @param rater    The user who provided the rating.
+     * @param stars    The number of stars (rating) provided by the user.
+     */
+    public ProductRating(String comment, ECommerceUser rater, int stars) {
+        this.id = UUID.randomUUID();
+        this.stars = stars;
+        this.comment = comment;
+        this.creationDate = LocalDateTime.now();
+        this.lastEditDate = LocalDateTime.now();
+        this.rater = rater;
+        this.votingSystem = new VotingSystem();
+    }
 
-	    public void setComment(String comment) {
-	    	this.lastEditDate = LocalDateTime.now();
-	        this.comment = comment;
-	    }
-	
+    /**
+     * Retrieves a string containing the information about the product rating.
+     *
+     * @return A string with the rating information.
+     */
+    public String getInformation() {
+        return "Rating ID: " + this.id.toString() +
+               "\nRater ID: " + this.rater.getId() +
+               "\nDate: " + this.creationDate.toString() +
+               "\nLast changed: " + this.lastEditDate.toString() +
+               "\nStars: " + Integer.toString(this.stars) +
+               "\nComment: " + this.comment;
+    }
+
+    /**
+     * Adds an upvote to the product rating.
+     *
+     * @param voter The user who is casting the upvote.
+     * @throws Exception If there is an issue adding the upvote.
+     */
+    public void upVote(ECommerceUser voter) throws Exception {
+        votingSystem.addVote(voter, VotingSystem.VoteType.UP_VOTE);
+    }
+
+    /**
+     * Adds a downvote to the product rating.
+     *
+     * @param voter The user who is casting the downvote.
+     * @throws Exception If there is an issue adding the downvote.
+     */
+    public void downVote(ECommerceUser voter) throws Exception {
+        votingSystem.addVote(voter, VotingSystem.VoteType.DOWN_VOTE);
+    }
+
+    /**
+     * Removes a vote (either upvote or downvote) from the product rating.
+     *
+     * @param user The user who is removing their vote.
+     * @throws Exception If there is an issue removing the vote.
+     */
+    public void removeVote(ECommerceUser user) throws Exception {
+        votingSystem.removeVote(user);
+    }
+
+    /**
+     * Retrieves a specific report associated with the product rating.
+     *
+     * @param reportId The unique identifier of the report.
+     * @return The `Report` object, or `null` if not found.
+     */
+    public Report getReport(UUID reportId) {
+        for (Report report : this.reports) {
+            if (report.getId() == reportId) {
+                return report;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Retrieves a string containing the information about all the reports
+     * associated with the product rating.
+     *
+     * @return A string with the reports information.
+     */
+    public String getReportsInformation() {
+        String information = "REPORTS INFORMATION: \n\n";
+        for (Report report : this.reports) {
+            information += report.getInformation() + "\n\n";
+        }
+        return information;
+    }
+
+    /**
+     * Retrieves the number of reports associated with the product rating.
+     *
+     * @return The number of reports.
+     */
+    public int getReportCount() {
+        return this.reports.size();
+    }
+
+    /**
+     * Adds a new report to the list of reports associated with the product rating.
+     *
+     * @param report The new report to be added.
+     */
+    public void addReport(Report report) {
+        this.reports.add(report);
+    }
+
+    /**
+     * Removes a specific report from the list of reports associated with the
+     * product rating.
+     *
+     * @param reportID The unique identifier of the report to be removed.
+     */
+    public void removeReport(UUID reportID) {
+        Report report = this.getReport(reportID);
+        if (report != null) {
+            this.reports.remove(report);
+        }
+    }
+
+    // Getters and setters for the class properties
+    public UUID getId() {
+        return id;
+    }
+
+    public ECommerceUser getRater() {
+        return rater;
+    }
+
+    public int getStars() {
+        return stars;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public int getUpVoteCount() {
+        return votingSystem.getUpVoteCount();
+    }
+
+    public int getDownVoteCount() {
+        return votingSystem.getDownVoteCount();
+    }
+
+    public int getTotalVoteCount() {
+        return votingSystem.getTotalVoteCount();
+    }
+
+    public void setStars(int stars) {
+        this.lastEditDate = LocalDateTime.now();
+        this.stars = stars;
+    }
+
+    public void setComment(String comment) {
+        this.lastEditDate = LocalDateTime.now();
+        this.comment = comment;
+    }
 }
